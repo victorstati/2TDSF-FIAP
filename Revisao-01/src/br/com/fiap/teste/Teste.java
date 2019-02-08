@@ -2,6 +2,7 @@ package br.com.fiap.teste;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import br.com.fiap.bean.Carro;
@@ -9,6 +10,7 @@ import br.com.fiap.bean.Transmissao;
 
 public class Teste {
 
+	@SuppressWarnings("all")
 	public static void main(String[] args) {
 		
 		Carro c1 = new Carro();
@@ -25,6 +27,9 @@ public class Teste {
 		
 		System.out.println(sdf.format(data.getTime()));
 		System.out.println(sdf.format(data2.getTime()));
+		
+		
+		new Date("");
 	}
 
 }
