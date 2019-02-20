@@ -42,7 +42,7 @@ public class Cliente {
 	@Enumerated(EnumType.STRING)
 	private Genero genero;
 	
-	@Column(name="dt_cadastro", updatable=false, nullable=false)
+	@Column(name="dt_cadastro", updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Calendar dataCadastro;
