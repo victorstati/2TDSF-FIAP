@@ -16,6 +16,7 @@ public class Exercicio {
 		//REALIZAR O CRUD PARA O PRODUTO
 		EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("CLIENTE_ORACLE");
 		EntityManager em = fabrica.createEntityManager();
+		
 		//Cadastrar
 		Produto produto = new Produto("Notebook", 2, Estado.NOVO,
 				new GregorianCalendar(2019, Calendar.MARCH, 2), 
@@ -28,7 +29,7 @@ public class Exercicio {
 		System.out.println("Nome do Produto: "+produto.getNome());
 		
 		//Atualizar
-		 produto = new Produto("Celular", 2, Estado.NOVO,
+		produto = new Produto(1,"Celular", 2, Estado.NOVO,
 				new GregorianCalendar(2019, Calendar.MARCH, 2), 
 				new GregorianCalendar(2018, Calendar.APRIL, 19), 2000, null);
 		produto = em.merge(produto);
