@@ -9,7 +9,7 @@ import br.com.fiap.exception.CommitException;
 
 public class VeiculoDAOImpl implements VeiculoDAO{
 
-	EntityManager em;
+	private EntityManager em;
 	
 	
 	public VeiculoDAOImpl(EntityManager em) {

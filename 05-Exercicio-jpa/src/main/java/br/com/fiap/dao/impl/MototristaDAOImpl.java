@@ -9,7 +9,7 @@ import br.com.fiap.exception.CommitException;
 
 public class MototristaDAOImpl implements MotoristaDAO{
 
-	EntityManager em;
+	private EntityManager em;
 	
 	public MototristaDAOImpl(EntityManager em) {
 		super();
