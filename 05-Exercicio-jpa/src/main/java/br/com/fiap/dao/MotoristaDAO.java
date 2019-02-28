@@ -1,6 +1,8 @@
 package br.com.fiap.dao;
 
 import br.com.fiap.entity.Motorista;
+import br.com.fiap.exception.CodigoInexistenteException;
+import br.com.fiap.exception.CommitException;
 
 public interface MotoristaDAO {
 
@@ -8,7 +10,9 @@ public interface MotoristaDAO {
 	
 	void atualizar(Motorista motorista);
 	
-	void remover(int codigo);
+	void remover(int codigo) throws CodigoInexistenteException;
 	
 	Motorista pesquisar(int codigo);
+	
+	void commit()throws CommitException;
 }
