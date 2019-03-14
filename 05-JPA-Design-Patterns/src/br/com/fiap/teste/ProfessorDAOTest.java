@@ -1,7 +1,10 @@
 package br.com.fiap.teste;
 
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import javax.persistence.EntityManager;
@@ -9,6 +12,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import br.com.fiap.dao.ProfessorDAO;
@@ -18,10 +23,27 @@ import br.com.fiap.exception.CodigoInexistenteException;
 import br.com.fiap.exception.CommitException;
 
 class ProfessorDAOTest {
-	
+
 	private static ProfessorDAO dao;
-	
-	//método que será executado antes de todos os testes
+
+	private static Professor prof;
+
+	// Método que será executado antes de cada teste
+	@BeforeEach
+	public void arrange() {
+		// cadastrar
+		prof = new Professor("Parducci", null, "77889911223");
+
+		try {
+			dao.cadastar(prof);
+			dao.commit();
+		} catch (CommitException e) {
+			e.printStackTrace();
+			fail("Falha no teste");
+		}
+	}
+
+	// método que será executado antes de todos os testes
 	@BeforeAll
 	public static void inicializar() {
 		EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("teste");
@@ -30,70 +52,78 @@ class ProfessorDAOTest {
 	}
 
 	@Test
+	@DisplayName("Teste de cadastro de professor com sucesso")
 	void cadastroTest() {
-		//Arrange - instanciar os objetos
-		Professor prof = new Professor("Parducci", null, "12365545555");
-		
-		//Act - realizar a ação (chamar o método para teste)
-		try {
-			dao.cadastar(prof);
-			dao.commit();
-		} catch (CommitException e) {
-			e.printStackTrace();
-			fail("Falha no teste...");
-		}
-		
-		//Assert - validar o resultado
-		//valida se foi gerado um código pela sequence
+		// Assert - validar o resultado
+		// valida se foi gerado um código pela sequence
 		assertNotEquals(0, prof.getId());
 	}
-	
-	//Teste atualizar
+
+	// Teste atualizar
 	@Test
+	@DisplayName("Teste de atualização de professor com sucesso")
 	void atualizaTest() {
-		//Arrange
-		Professor prof = new Professor(1, "Parducci", null, "12345678912");
-		
-		//Act
-		//Cadastrar um professor
-		//Atualiza o professor
+		// Atualizar o professor
+		Professor prof2 = new Professor(prof.getId(), "Rafael", null, "44553322551");
 		try {
-			dao.atualizar(prof);
+			dao.atualizar(prof2);
 			dao.commit();
-		}catch(CommitException e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			fail("Falha no teste");
+			fail("Erro no teste");
 		}
-		
-		//Assert
-		//Pesquisa e valida se o valor foi alterado no banco
-		assertEquals(1, prof.getId());
-	}
-	
-	//Teste Excluir
-	@Test
-	void excluirTest() {
+
+		// Assert
+		// Pesquisa e valida se o valor foi alterado no banco
 		try {
-			Professor prof = dao.pesquisar(1);
-			dao.excluir(1);
-			dao.commit();
-		} catch (CodigoInexistenteException e) {
-			e.printStackTrace();
-		}catch(CommitException e) {
-			e.printStackTrace();
-			fail("falha");
-		}
-	}
-	
-	//Teste Pesquisar
-	@Test
-	void pesquisaTest() {
-		try {
-			Professor prof = dao.pesquisar(1);
+			Professor prof3 = dao.pesquisar(prof.getId());
+			assertEquals("Rafael", prof3.getNome());
+			assertEquals("44553322551", prof3.getCpf());
 		} catch (CodigoInexistenteException e) {
 			e.printStackTrace();
 			fail("Falha no teste");
 		}
 	}
 
+	// Teste Pesquisar
+	@Test
+	@DisplayName("Teste de pesquisa de professor com sucesso")
+	void pesquisaTest() {
+		// pesquisar professor
+		try {
+			Professor busca = dao.pesquisar(prof.getId());
+			// Assert - validar
+			assertNotNull(busca); // encontrou alguem
+			assertEquals(busca.getNome(), prof.getNome());// encontrou o professor correto
+		} catch (CodigoInexistenteException e) {
+			e.printStackTrace();
+			fail("Erro na pesquisa");
+		}
+	}
+
+	// Teste Excluir
+	@Test
+	@DisplayName("Teste de exclusão de professor com sucesso")
+	void excluirTest() {
+		// Remove
+		try {
+			dao.excluir(prof.getId());
+			dao.commit();
+		} catch (CodigoInexistenteException | CommitException e) {
+			e.printStackTrace();
+			fail("Falha no teste");
+		}
+		
+		// pesquisa e valida se foi excluido
+		assertThrows(CodigoInexistenteException.class, ()->dao.pesquisar(prof.getId()));
+		
+//		try {
+//			Professor pesquisa = dao.pesquisar(prof.getId());
+//			fail("Falha no teste");
+//		} catch (CodigoInexistenteException e) {
+//			e.printStackTrace();
+//			//Sucesso
+//			
+//		}
+	}
 }
