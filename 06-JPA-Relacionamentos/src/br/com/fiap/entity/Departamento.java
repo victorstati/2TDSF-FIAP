@@ -1,11 +1,14 @@
 package br.com.fiap.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,12 +28,12 @@ public class Departamento {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="departamento")
 	private int codigo;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name="cd_gerente")
 	private Gerente gerente;
 	
-	@OneToMany(mappedBy="departamento")
-	private List<Funcionario> funcionarios;
+	@OneToMany(mappedBy="departamento", cascade = CascadeType.PERSIST)
+	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 	
 	@Column(name="nm_departamento", nullable=false, length=50)
 	private String nome;
@@ -38,5 +41,68 @@ public class Departamento {
 	@Column(name="ds_status")
 	@Enumerated(EnumType.STRING)
 	private Status status;
+	
+	public void addFuncionario(Funcionario funcionario) {
+		//adicionar o funcionário na lista
+		funcionarios.add(funcionario);
+		
+		//adicionar o departamento no fucionário
+		funcionario.setDepartamento(this);
+	}
+	
+
+	public Departamento() {
+		super();
+	}
+	
+	
+	public Departamento(Gerente gerente, String nome, Status status) {
+		super();
+		this.gerente = gerente;
+		this.nome = nome;
+		this.status = status;
+	}
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+
+	public Gerente getGerente() {
+		return gerente;
+	}
+
+	public void setGerente(Gerente gerente) {
+		this.gerente = gerente;
+	}
+
+	public List<Funcionario> getFuncionarios() {
+		return funcionarios;
+	}
+
+	public void setFuncionarios(List<Funcionario> funcionarios) {
+		this.funcionarios = funcionarios;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
+	
 	
 }
