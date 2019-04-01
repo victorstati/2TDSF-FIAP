@@ -4,7 +4,10 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -20,6 +23,7 @@ import br.com.fiap.entity.Departamento;
 import br.com.fiap.entity.Funcionario;
 import br.com.fiap.entity.Gerente;
 import br.com.fiap.entity.Nivel;
+import br.com.fiap.entity.Projeto;
 import br.com.fiap.entity.Status;
 import br.com.fiap.exception.CodigoInexistenteException;
 import br.com.fiap.exception.CommitException;
@@ -55,7 +59,20 @@ class DepartamentoDAOTest {
 			departamento.addFuncionario(f1);
 			departamento.addFuncionario(f2);
 			
-			gerenteDao.cadastrar(gerente);
+			Projeto p1 = new Projeto("Projeto Churros", Status.ATIVO, Calendar.getInstance(), 
+					new GregorianCalendar(2019, Calendar.OCTOBER, 10));
+			
+			Projeto p2 = new Projeto("Projeto AM", Status.ATIVO, Calendar.getInstance(), 
+					new GregorianCalendar(2019, Calendar.OCTOBER, 10));
+			
+			//associar funcionario
+			List<Projeto> projetos = new ArrayList<>();
+			projetos.add(p1);
+			projetos.add(p2);
+			
+			f1.setProjetos(projetos);
+			
+			//gerenteDao.cadastrar(gerente);
 			depDao.cadastrar(departamento);
 			depDao.commit();
 		}catch(CommitException e) {

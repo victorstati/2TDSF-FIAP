@@ -1,13 +1,17 @@
 package br.com.fiap.entity;
 
 import java.util.Calendar;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -23,11 +27,29 @@ public class Funcionario {
 	@Column(name="cd_funcionario")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="funcionario")
 	private int codigo;
+	@Column(name="nm_funcionario", nullable=false, length=50)
+	private String nome;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="dt_nascimento")
+	private Calendar dataNascimento;
+	
+	@Column(name="vl_salario")
+	private float salario;
 	
 	@ManyToOne
 	@JoinColumn(name="cd_departamento")
 	private Departamento departamento;
 	
+	//cadastrar os projetos
+	@ManyToMany(cascade=CascadeType.PERSIST)
+	@JoinTable(name="T_FUNCIONARIO_PROJETO", 
+	joinColumns=@JoinColumn(name="cd_funcionario"),
+	inverseJoinColumns = @JoinColumn(name="cd_projeto"))
+	private List<Projeto> projetos;
+	
+	
+
 	public Funcionario(String nome, Calendar dataNascimento, float salario) {
 		super();
 		this.nome = nome;
@@ -37,7 +59,6 @@ public class Funcionario {
 
 	public Funcionario() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getCodigo() {
@@ -80,15 +101,12 @@ public class Funcionario {
 		this.salario = salario;
 	}
 
-	@Column(name="nm_funcionario", nullable=false, length=50)
-	private String nome;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="dt_nascimento")
-	private Calendar dataNascimento;
-	
-	@Column(name="vl_salario")
-	private float salario;
-	
-	
+	public List<Projeto> getProjetos() {
+		return projetos;
+	}
+
+	public void setProjetos(List<Projeto> projetos) {
+		this.projetos = projetos;
+	}
 }

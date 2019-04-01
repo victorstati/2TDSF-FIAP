@@ -28,6 +28,8 @@ public class Departamento {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="departamento")
 	private int codigo;
 	
+	//FK
+	//cascade realiza operações em cascata
 	@OneToOne(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name="cd_gerente")
 	private Gerente gerente;
