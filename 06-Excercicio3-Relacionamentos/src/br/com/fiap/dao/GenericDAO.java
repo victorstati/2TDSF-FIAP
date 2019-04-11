@@ -9,9 +9,9 @@ public interface GenericDAO<T, K> {
 	
 	void atualizar(T entidade);
 	
-	void excluir(K codigo) throws CodigoInexistenteException;
+	void remover(K codigo) throws CodigoInexistenteException;
 	
-	T pesquisar(K codigo) throws CodigoInexistenteException;
+	T buscar(K codigo) throws CodigoInexistenteException;
 	
 	void commit() throws CommitException;
 }

@@ -1,10 +1,15 @@
 package br.com.fiap.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -26,17 +31,20 @@ public class Veiculo {
 	
 	@Column(name="nr_ano")
 	private int ano;
-
-	public Veiculo(int codigo, String placa, String cor, int ano) {
+	
+	@ManyToMany(mappedBy="veiculos")
+	private List<Motorista> motoristas;
+	
+	public Veiculo(String placa, String cor, int ano) {
 		super();
-		this.codigo = codigo;
 		this.placa = placa;
 		this.cor = cor;
 		this.ano = ano;
 	}
 
-	public Veiculo(String placa, String cor, int ano) {
+	public Veiculo(int codigo, String placa, String cor, int ano) {
 		super();
+		this.codigo = codigo;
 		this.placa = placa;
 		this.cor = cor;
 		this.ano = ano;
@@ -76,6 +84,14 @@ public class Veiculo {
 
 	public void setAno(int ano) {
 		this.ano = ano;
+	}
+
+	public List<Motorista> getMotoristas() {
+		return motoristas;
+	}
+
+	public void setMotoristas(List<Motorista> motoristas) {
+		this.motoristas = motoristas;
 	}
 	
 	
