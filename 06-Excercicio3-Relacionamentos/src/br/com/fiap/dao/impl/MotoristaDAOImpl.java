@@ -1,5 +1,7 @@
 package br.com.fiap.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import br.com.fiap.dao.MotoristaDAO;
@@ -9,6 +11,13 @@ public class MotoristaDAOImpl extends GenericDAOImpl<Motorista, Integer> impleme
 
 	public MotoristaDAOImpl(EntityManager em) {
 		super(em);
+	}
+
+	@Override
+	public List<Motorista> pesquisaPorNome(String nome) {
+		return em.createQuery("from Motorista m where m.nome like :n", Motorista.class)
+				.setParameter("n", "%"+nome+"%")
+				.getResultList();
 	}
 
 	

@@ -30,7 +30,7 @@
 			<artifactId>jdbc-driver</artifactId>
 			<version>12</version>
 			<scope>system</scope>
-			<systemPath>E:/ojdbc8.jar</systemPath>
+			<systemPath>F:/ojdbc8.jar</systemPath>
 		</dependency>
 
 	</dependencies>
