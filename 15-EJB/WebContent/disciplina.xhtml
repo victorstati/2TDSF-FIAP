@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+
+</h:head>
+   
+<h:body>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel value="NAC" for="nac"/>
+			<h:inputText value="#{disciplinaBean.nac}" id="nac"/>
+			
+			<h:outputLabel value="AM" for="am"/>
+			<h:inputText value="#{disciplinaBean.am}" id="am"/>
+			
+			<h:outputLabel value="PS" for="ps"/>
+			<h:inputText value="#{disciplinaBean.ps}" id="ps"/>
+			
+			<h:commandButton action="#{disciplinaBean.calcular()}" value="Calcular Media" />
+			
+			<h:outputLabel value="#{disciplinaBean.media}" />
+			
+			<h:outputLabel value="Aulas" for="aula"/>
+			<h:inputText value="#{disciplinaBean.aulas}" id="aula"/>
+			
+			<h:outputLabel value="Faltas" for="falta"/>
+			<h:inputText value="#{disciplinaBean.faltas}" id="falta"/>
+			
+			<h:commandButton action="#{disciplinaBean.verificar()}" value="Verificar" />
+			
+			<h:outputText value="#{disciplinaBean.aprovado?'Sim' : 'Não'}" /> 
+			
+		</h:panelGrid>
+	</h:form>
+</h:body>   
+</html>
